@@ -15,11 +15,14 @@ SHEET = GSPREAD_CLIENT.open('love_sandwiches')
 
 def get_sales_data():
     """
-    Get sales figures input from the user
+    Get sales figures input from the user.
+    Run a while loop to collect a valid string of data from the user
+    via the terminal, which must be a string of 6 numbers separated
+    by commas. The loop will repeatedly request data, until it is valid.
     """
     while True:
         print("Please enter sales data from the last market.")
-        print("Data sould be six numbers, separated by commas.")
+        print("Data should be six numbers, separated by commas.")
         print("Example: 10, 20, 30, 40, 50, 60\n")
 
         data_str = input("Enter your data here:")
@@ -98,7 +101,26 @@ def calculate_surplus_data(sales_row):
         surplus_data.append(surplus)
     
     return surplus_data        
-        
+
+
+def get_last_5_entries_sales():
+    """
+    Collect columns of data from sales worksheet, collecting
+    the last 5 entries for each sandwich and returns the data
+    as a list of lists.
+    """
+    sales = SHEET.worksheet("sales")
+    # column = sales.col_values(3)
+    # print(column)
+    columns = []
+    for ind in range(1, 7):
+        column = sales.col_values(ind)
+        columns.append(column[-5:])
+    # pprint(columns)
+    
+    return columns
+    
+    
 def main():
     """
     Run all program functions
@@ -112,4 +134,5 @@ def main():
 
 
 print("Welcome to Love Sandwiches Data Automation.\n")
-main()
+#main()
+sales_columns = get_last_5_entries_sales()
